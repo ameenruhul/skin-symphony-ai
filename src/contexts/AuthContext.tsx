@@ -32,6 +32,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+    } else {
+      // Auto-create a default user if none exists
+      const defaultUser: User = {
+        id: Date.now().toString(),
+        email: 'user@demo.com',
+        name: 'Demo User',
+        onboardingStatus: 'not_started',
+        xp: 0,
+        streak: 0,
+        title: 'Glow Seeker'
+      };
+      setUser(defaultUser);
+      localStorage.setItem('user', JSON.stringify(defaultUser));
     }
   }, []);
 
