@@ -7,6 +7,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Scan from "./pages/Scan";
+import Routine from "./pages/Routine";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/scan" element={<Scan />} />
+            <Route path="/routine" element={<Routine />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
