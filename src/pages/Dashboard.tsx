@@ -16,6 +16,9 @@ import { getMockDashboardData } from '@/lib/mockData';
 import BottomNav from '@/components/BottomNav';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
+import { PaymentMethods } from '@/components/PaymentMethods';
+import { Subscription } from '@/components/Subscription';
+import { BillingHistory } from '@/components/BillingHistory';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -23,6 +26,7 @@ export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [paymentView, setPaymentView] = useState<"methods" | "subscription" | "billing" | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -86,7 +90,7 @@ export default function Dashboard() {
                       <button 
                         onClick={() => {
                           setMenuOpen(false);
-                          // Navigate to payment method page
+                          setPaymentView("methods");
                         }}
                         className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left"
                       >
@@ -96,7 +100,7 @@ export default function Dashboard() {
                       <button 
                         onClick={() => {
                           setMenuOpen(false);
-                          // Navigate to subscription page
+                          setPaymentView("subscription");
                         }}
                         className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left"
                       >
@@ -106,7 +110,7 @@ export default function Dashboard() {
                       <button 
                         onClick={() => {
                           setMenuOpen(false);
-                          // Navigate to billing history
+                          setPaymentView("billing");
                         }}
                         className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted text-left"
                       >
@@ -182,8 +186,26 @@ export default function Dashboard() {
                     <span>Logout</span>
                   </button>
                 </div>
-              </SheetContent>
-            </Sheet>
+        </SheetContent>
+      </Sheet>
+
+      {/* Payment Dialogs */}
+      <Sheet open={paymentView !== null} onOpenChange={(open) => !open && setPaymentView(null)}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>
+              {paymentView === "methods" && "Payment Methods"}
+              {paymentView === "subscription" && "Subscription"}
+              {paymentView === "billing" && "Billing History"}
+            </SheetTitle>
+          </SheetHeader>
+          <div className="mt-6">
+            {paymentView === "methods" && <PaymentMethods />}
+            {paymentView === "subscription" && <Subscription />}
+            {paymentView === "billing" && <BillingHistory />}
+          </div>
+        </SheetContent>
+      </Sheet>
             <Badge variant="secondary">Welcome back</Badge>
             <button className="p-2 hover:bg-background/50 rounded-lg">
               <span className="text-xl">⋯</span>
